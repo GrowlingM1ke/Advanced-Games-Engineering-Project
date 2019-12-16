@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class Individual
 {
     public double[] genes { get; private set; }

@@ -11,4 +11,28 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Race Track 1.unity
     guid: c853a387c4bc1214798b8f0348a4cfd9
+  - enabled: 1
+    path: Assets/Scenes/Options Menu.unity
+    guid: 6ae0031934580424a9e6de84c002dbeb
+  - enabled: 1
+    path: Assets/Scenes/Race Track 2.unity
+    guid: afd0ff6b7c026be4ea14e0351733ac12
+  - enabled: 1
+    path: Assets/Scenes/Race Track 3.unity
+    guid: d2ab86c64350f6943a7310c73cae342c
+  - enabled: 1
+    path: Assets/Scenes/Race Track 4.unity
+    guid: d8b1c58e437f8404c91ed0c8697f5b3b
+  - enabled: 1
+    path: Assets/Scenes/Race Track 5.unity
+    guid: 34a67a796ddc2e544b8f253bbb540671
+  - enabled: 1
+    path: Assets/Scenes/Pick Menu.unity
+    guid: 7994024ef50d41447a148c4f48546577
+  - enabled: 1
+    path: Assets/Scenes/Racing Menu.unity
+    guid: 7354181eaac426445908f7735397eb88
+  - enabled: 1
+    path: Assets/Scenes/highscores.unity
+    guid: f24a596635ccd104abc5c5147166dd39
   m_configObjects: {}

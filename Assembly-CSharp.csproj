@@ -60,17 +60,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Button_Click.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Car2DController.cs" />
     <Compile Include="Assets\Scripts\CarAI.cs" />
     <Compile Include="Assets\Scripts\GameLoop.cs" />
     <Compile Include="Assets\Scripts\Genetic Algorithm\GeneticAlgorithm.cs" />
     <Compile Include="Assets\Scripts\Genetic Algorithm\Individual.cs" />
+    <Compile Include="Assets\Scripts\Genetic Algorithm\IndividualToSave.cs" />
     <Compile Include="Assets\Scripts\Genetic Algorithm\Parameters.cs" />
+    <Compile Include="Assets\Scripts\Genetic Algorithm\PopulationToSave.cs" />
+    <Compile Include="Assets\Scripts\Genetic Algorithm\SaveLoad.cs" />
+    <Compile Include="Assets\Scripts\HighScoreData.cs" />
     <Compile Include="Assets\Scripts\id.cs" />
-    <Compile Include="Assets\Scripts\Main Menu.cs" />
-    <Compile Include="Assets\tex.cs" />
+    <Compile Include="Assets\Scripts\Menu\Button_Click.cs" />
+    <Compile Include="Assets\Scripts\Menu\Confirmation.cs" />
+    <Compile Include="Assets\Scripts\Menu\DisplayText.cs" />
+    <Compile Include="Assets\Scripts\Menu\HighscoreMenu.cs" />
+    <Compile Include="Assets\Scripts\Menu\Intial_Value_Toggle.cs" />
+    <Compile Include="Assets\Scripts\Menu\RacePicker.cs" />
+    <Compile Include="Assets\Scripts\Menu\TrackPicker.cs" />
+    <Compile Include="Assets\Scripts\MouseClicking.cs" />
+    <Compile Include="Assets\Scripts\Populate.cs" />
+    <Compile Include="Assets\Scripts\tex.cs" />
+    <Compile Include="Assets\Scripts\Update_Fitness.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Michal/Advanced Games Eng Project/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

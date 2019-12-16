@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CarAI : MonoBehaviour
 {
     // Start is called before the first frame update
     public Individual individual;
-    int layer_mask;
     Collider2D col;
     public float fitness;
     Vector3 lastposition;
@@ -17,49 +17,125 @@ public class CarAI : MonoBehaviour
     float driftFactor = 0.75f;
     float time = 0.0f;
     public float checkpoints = 0;
+    public bool playerControl = false;
     bool hitWall;
+    public GameObject me;
+    public Sprite red;
+    public Sprite green;
+    public Sprite purple;
+    public Sprite blue;
+    public Sprite yellow;
+    private bool finished = false;
+    public float finalTime = 0.0f;
+    public Text text;
+    public string name;
 
     void Start()
     {
         // wall is 9
-        layer_mask = 11;
         col = GetComponent<BoxCollider2D>();
         fitness = 0;
         lastposition = transform.position;
         hitWall = false;
+        finished = false;
+        if (Parameters.race && playerControl)
+        {
+            if (Parameters.colour == "Red")
+                GetComponent<SpriteRenderer>().sprite = red;
+            if (Parameters.colour == "Green")
+                GetComponent<SpriteRenderer>().sprite = green;
+            if (Parameters.colour == "Purple")
+                GetComponent<SpriteRenderer>().sprite = purple;
+            if (Parameters.colour == "Blue")
+                GetComponent<SpriteRenderer>().sprite = blue;
+            if (Parameters.colour == "Yellow")
+                GetComponent<SpriteRenderer>().sprite = yellow;
+        }
+        if (Parameters.race)
+        {
+            time = -3.0f;
+        }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        // Update fitness
-        time += Time.deltaTime;
-        fitness += Vector3.Distance(lastposition, transform.position);
-        lastposition = transform.position;
-        // Check if collided with wall and if so update the fitness and destroy yourself
-        if (hitWall || time > 70.0f) {
-            isDone = true;
-        }
-
-        // Raycast
-        double[] inputs = Raycast();
-
-
-        // Now do movement based on that
-        double[] outputs = individual.computeOutput(inputs);
-
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (outputs[0] > 0.5)
+        if (time < 0.0f)
         {
-            GetComponent<Rigidbody2D>().AddForce(transform.right * speedForce);
+            time += Time.deltaTime;
         }
 
-        CustomInput.SetAxis("Horizontal", (float) outputs[1]);
+        else if (playerControl)
+        {
+            time += Time.deltaTime;
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (Input.GetButton("Accelerate"))
+            {
+                rb.AddForce(transform.right * speedForce);
+            }
+
+            if (Input.GetKey("left") || Input.GetKey("right"))
+                CustomInput.SetAxis("Horizontal", Input.GetAxis("Horizontal"));
+            else
+                CustomInput.SetAxis("Horizontal", 0);
 
 
-        rb.angularVelocity = (CustomInput.GetAxis("Horizontal") * torqueForce);
+            rb.angularVelocity = (CustomInput.GetAxis("Horizontal") * torqueForce);
 
-        rb.velocity = ForwardVelocity() + LeftVelocity() * driftFactor;
+            rb.velocity = ForwardVelocity() + LeftVelocity() * driftFactor;
+
+            if (hitWall && Parameters.wallDeath)
+                Destroy(me);
+        }
+        else
+        {
+            // Update fitness
+            time += Time.deltaTime;
+            fitness += Vector3.Distance(lastposition, transform.position);
+            lastposition = transform.position;
+            // Check if collided with wall and if so update the fitness and destroy yourself
+            if (hitWall || time > 70.0f || Parameters.killCommand)
+            {
+                isDone = true;
+            }
+
+            // Raycast
+            double[] inputs = Raycast();
+
+
+            // Now do movement based on that
+            double[] outputs = individual.computeOutput(inputs);
+
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (outputs[0] > 0.5)
+            {
+                GetComponent<Rigidbody2D>().AddForce(transform.right * speedForce);
+            }
+
+            CustomInput.SetAxis("Horizontal", (float)outputs[1]);
+
+
+            rb.angularVelocity = (CustomInput.GetAxis("Horizontal") * torqueForce);
+
+            rb.velocity = ForwardVelocity() + LeftVelocity() * driftFactor;
+        }
+
+        if (Parameters.race && finished)
+        {
+            if (playerControl)
+            {
+                text.text = "Finished with time of " + time;
+            }
+            // Save highscore
+            finished = false;
+            if (name == null)
+                Parameters.listForHighScore.Add(new HighScoreData("Player", finalTime, Parameters.track));
+            else
+                Parameters.listForHighScore.Add(new HighScoreData(name, finalTime, Parameters.track));
+
+        }
+
+        finalTime = time;
     }
 
     public void setIndividual(Individual individual, int id)
@@ -119,10 +195,12 @@ public class CarAI : MonoBehaviour
             hitWall = true;
         else if (col.gameObject.tag == "checkpoint")
         {
+            Physics2D.IgnoreCollision(col.collider, this.col);
             if (checkpoints == col.transform.root.GetComponent<id>().value)
             {
                 checkpoints = col.transform.root.GetComponent<id>().value + 1;
-                Physics2D.IgnoreCollision(col.collider, this.col);
+                if (checkpoints == 6 && Parameters.race)
+                    finished = true;
             }
         }
     }
